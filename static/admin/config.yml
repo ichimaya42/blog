@@ -1,12 +1,14 @@
 backend:
-  name: proxy
-  branch: master
-  proxy_url: http://localhost:8081/api/v1
+  name: git-gateway
+  branch: main
+  repo: ichimaya42/blog
 
-
+publish_mode: editorial_workflow
 
 media_folder: "static/images/uploads"
 public_folder: "/images/uploads"
+
+search: false
 
 collections:
   - name: "posts"
@@ -17,4 +19,5 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Draft", name: "draft", widget: "boolean" }
       - { label: "Body", name: "body", widget: "markdown" }
