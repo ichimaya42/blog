@@ -1,0 +1,20 @@
+backend:
+  name: proxy
+  branch: master
+  proxy_url: http://localhost:8081/api/v1
+
+
+
+media_folder: "static/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }

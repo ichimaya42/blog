@@ -1,0 +1,13 @@
+{{- /* This template generates the JSON search index */ -}}
+[
+  {{- $post_list := where site.RegularPages "Type" "in" site.Params.mainSections -}}
+  {{- $post_count := len $post_list -}}
+  {{- range $index, $page := $post_list -}}
+    {
+      "title": {{ $page.Title | jsonify }},
+      "url": {{ $page.Permalink | jsonify }},
+      "content": {{ $page.Plain | jsonify }},
+      "date": {{ $page.Date | jsonify }}
+    }{{- if ne (add $index 1) $post_count -}},{{- end -}}
+  {{- end -}}
+]

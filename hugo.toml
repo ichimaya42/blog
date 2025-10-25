@@ -1,0 +1,23 @@
+baseURL = '/'
+languageCode = 'en-in'
+title = 'My New Hugo Site'
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[outputFormats]
+  [outputFormats.JSON]
+    baseName = "search-index"
+    mediaType = "application/json"
+
+# Configure front matter defaults
+[frontmatter]
+  lastmod = ["lastmod", ":git", "date"]
+
+# Markup settings (important for math)
+[markup]
+  [markup.highlight]
+    codeFences = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # Allows raw HTML in markdown (needed for some math)

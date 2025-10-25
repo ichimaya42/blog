@@ -1,0 +1,32 @@
+{{ define "main" }}
+    <section class="homepage">
+        <h1>{{ site.Title }}</h1>
+        <p class="subtitle">Step-by-step physics solutions</p>
+        
+        <div class="posts-list">
+            <h2>Published Solutions</h2>
+            {{ range where .Pages "Params.draft" "!=" true }}
+                <article class="post-preview">
+                    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+                    {{ if .Params.description }}<p class="description">{{ .Params.description }}</p>{{ end }}
+                </article>
+            {{ else }}
+                <p>No published solutions yet. Check back soon!</p>
+            {{ end }}
+        </div>
+
+        {{ if gt (len (where .Pages "Params.draft" true)) 0 }}
+        <div class="drafts-list">
+            <h2>Drafts (Visible in Development)</h2>
+            {{ range where .Pages "Params.draft" true }}
+                <article class="post-preview draft">
+                    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                    <span class="draft-badge">DRAFT</span>
+                    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+                </article>
+            {{ end }}
+        </div>
+        {{ end }}
+    </section>
+{{ end }}

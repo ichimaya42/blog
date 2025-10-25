@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>
+  <!-- Include Fuse.js -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+</head>
+<body>
+  <h1>Search the Blog</h1>
+  <input type="text" id="searchInput" placeholder="Enter search term...">
+  <div id="searchResults"></div>
+
+  <script>
+    // Fetch and load the search index
+    fetch('/search-index.json')
+      .then(response => response.json())
+      .then(pages => {
+        // Configure Fuse.js options
+        const options = {
+          keys: ['title', 'content'], // Fields to search in
+          includeScore: true,
+          threshold: 0.4 // Adjust for fuzziness (0.0 = exact, 1.0 = very fuzzy)
+        };
+        const fuse = new Fuse(pages, options);
+
+        // Get DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const resultsContainer = document.getElementById('searchResults');
+
+        // Perform search on input
+        searchInput.addEventListener('keyup', (e) => {
+          const query = e.target.value;
+          if (query.length < 2) {
+            resultsContainer.innerHTML = '';
+            return;
+          }
+
+          const result = fuse.search(query);
+          displayResults(result);
+        });
+
+        function displayResults(results) {
+          if (results.length === 0) {
+            resultsContainer.innerHTML = '<p>No results found.</p>';
+            return;
+          }
+
+          const resultsHtml = results.map(item => `
+            <div class="search-result">
+              <h3><a href="${item.item.url}">${item.item.title}</a></h3>
+              <p>${item.item.content.substring(0, 150)}...</p>
+            </div>
+          `).join('');
+          resultsContainer.innerHTML = resultsHtml;
+        }
+      })
+      .catch(err => console.error('Error loading search index:', err));
+  </script>
+</body>
+</html>
